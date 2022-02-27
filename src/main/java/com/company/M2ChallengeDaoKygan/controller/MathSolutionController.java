@@ -6,13 +6,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 @RestController
 public class MathSolutionController {
 
     @PostMapping("/add")
     @ResponseStatus(value = HttpStatus.OK)
-    public MathSolution add(@RequestBody @Valid MathSolution mathSolution) {
+    public MathSolution add(@RequestBody @NotNull @Valid MathSolution mathSolution) {
         MathSolution additionSolution = new MathSolution();
         additionSolution.setOperand1(mathSolution.getOperand1());
         additionSolution.setOperand2(mathSolution.getOperand2());
@@ -28,7 +29,7 @@ public class MathSolutionController {
 
     @PostMapping("/subtract")
     @ResponseStatus(value = HttpStatus.OK)
-    public MathSolution subtract(@RequestBody @Valid MathSolution mathSolution) {
+    public MathSolution subtract(@RequestBody @NotNull @Valid MathSolution mathSolution) {
         MathSolution subtractionSolution = new MathSolution();
         subtractionSolution.setOperand1(mathSolution.getOperand1());
         subtractionSolution.setOperand2(mathSolution.getOperand2());
@@ -45,7 +46,7 @@ public class MathSolutionController {
 
     @PostMapping("/multiply")
     @ResponseStatus(value = HttpStatus.OK)
-    public MathSolution multiply(@RequestBody @Valid MathSolution mathSolution) {
+    public MathSolution multiply(@RequestBody @NotNull @Valid MathSolution mathSolution) {
         MathSolution multiplicationSolution = new MathSolution();
         multiplicationSolution.setOperand1(mathSolution.getOperand1());
         multiplicationSolution.setOperand2(mathSolution.getOperand2());
@@ -62,7 +63,7 @@ public class MathSolutionController {
     @PostMapping("/divide")
     @ResponseStatus(value = HttpStatus.OK)
     @ExceptionHandler(InvalidFormatException.class)
-    public MathSolution divide(@RequestBody @Valid MathSolution mathSolution) {
+    public MathSolution divide(@RequestBody @NotNull @Valid MathSolution mathSolution) {
 
         MathSolution divisionSolution = new MathSolution();
         divisionSolution.setOperand1(mathSolution.getOperand1());

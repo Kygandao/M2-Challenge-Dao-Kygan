@@ -77,4 +77,5 @@ public class MathSolution {
                 ", answer=" + answer +
                 '}';
     }
+
 }
