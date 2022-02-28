@@ -1,11 +1,12 @@
 package com.company.M2ChallengeDaoKygan.model;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 public class Month {
 
-    @NotEmpty(message = "You must supply a number")
     private int number;
     private String name;
 

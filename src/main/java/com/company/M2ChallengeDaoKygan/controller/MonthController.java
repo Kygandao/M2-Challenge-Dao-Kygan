@@ -2,12 +2,9 @@ package com.company.M2ChallengeDaoKygan.controller;
 
 import com.company.M2ChallengeDaoKygan.model.Month;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import javax.sound.midi.Soundbank;
+import javax.validation.Valid;
 import java.util.*;
 
 @RestController
@@ -29,19 +26,18 @@ public class MonthController {
             new Month(12, "December")
     ));
 
-    //I'M SURE THERE'S A MORE ELEGANT SOLUTION USING THE JAVA.TIME ENUM BUT I'M NOT SURE HOW TO SET IT UP.
+
     @GetMapping("/month/{monthNumber}")
     @ResponseStatus(value = HttpStatus.OK)
-    public Month getMonthByMonthNumber(@PathVariable int monthNumber) {
+    public Month getMonthByMonthNumber(@Valid @PathVariable int monthNumber) {
 
         if(monthNumber < 1 || monthNumber > 12) {
-            throw new IllegalArgumentException("Month number does not exist");
+            throw new IllegalArgumentException("NUMBER ENTERED SHOULD BE 1 THROUGH 12 ");
         }
-
-        //TODO: CREATE CHECK FOR PROPER INPUT TYPE. MUST BE INT BETWEEN 1-12, NOT A STRING
 
         System.out.println("CONVERTING MONTH NUMBER TO MONTH NAME");
         return monthList.get(monthNumber - 1);
+
     }
 
     @GetMapping("/randomMonth")

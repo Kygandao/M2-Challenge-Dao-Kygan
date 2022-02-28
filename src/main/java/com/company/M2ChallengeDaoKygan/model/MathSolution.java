@@ -1,14 +1,15 @@
 package com.company.M2ChallengeDaoKygan.model;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 public class MathSolution {
 
-    @NotNull(message = "You must supply a number")
+    @NotNull(message = "YOU MUST SUPPLY A NUMBER")
     private Integer operand1;
 
-    @NotNull(message = "You must supply a number that is not zero")
+    @NotNull(message = "YOU MUST SUPPLY A NUMBER THAT IS NOT ZERO")
     private Integer operand2;
     private String operation;
     private Integer answer;
