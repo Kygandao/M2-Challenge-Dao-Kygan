@@ -10,6 +10,7 @@ import javax.validation.Valid;
 @RestController
 public class MathSolutionController {
 
+    //TODO: REFACTOR TO ELIMINATE REDUNDANCY - SEE LINE 107
     //ADD
         @PostMapping("/add")
         @ResponseStatus(value = HttpStatus.OK)
@@ -102,6 +103,10 @@ public class MathSolutionController {
                 throw e;
             }
         }
+
+        //TODO: COMPLETE HELPER METHOD TO ELIMINATE REDUNDANCIES
+        //HELPER METHOD TO REPLACE TRY CATCH BLOCKS - VERIFY VALID INPUT
+
 
     }
 
