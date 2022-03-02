@@ -105,7 +105,25 @@ public class MathSolutionController {
         }
 
         //TODO: COMPLETE HELPER METHOD TO ELIMINATE REDUNDANCIES
-        //HELPER METHOD TO REPLACE TRY CATCH BLOCKS - VERIFY VALID INPUT
+        //HELPER METHOD TO REPLACE TRY CATCH BLOCKS FROM EACH MATH OPERATOR METHOD - VERIFY VALID INPUT
+            //OPERATION AND ANSWER TO BE SET IN EACH CORRESPONDING METHOD
+
+//        MathSolution validInput = new MathSolution();
+//        Integer number1 = validInput.getOperand1();
+//        Integer number2 = validInput.getOperand2();
+//        private MathSolution setIfValidInput(MathSolution validInput) {
+//           try {
+//               if(number1 == null || number2 == null) {
+//                   throw new IllegalArgumentException("ENTERED VALUE MUST BE A NUMBER AND MUST NOT BE BLANK");
+//               }
+//               validInput.setOperand1(number1);
+//               validInput.setOperand2(number2);
+//               return validInput;
+//           } catch (HttpMessageNotReadableException e) {
+//               throw e;
+//           }
+//        }
+
 
 
     }
