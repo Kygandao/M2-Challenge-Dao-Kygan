@@ -1,8 +1,6 @@
 package com.company.M2ChallengeDaoKygan.model;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.Objects;
 
 public class MathSolution {
 
@@ -11,13 +9,14 @@ public class MathSolution {
 
     @NotNull(message = "YOU MUST SUPPLY A NUMBER THAT IS NOT ZERO")
     private Integer operand2;
+
     private String operation;
     private Integer answer;
 
     public MathSolution() {
     }
 
-    public MathSolution(int operand1, int operand2, String operation, int answer) {
+    public MathSolution(Integer operand1, Integer operand2, String operation, Integer answer) {
         this.operand1 = operand1;
         this.operand2 = operand2;
         this.operation = operation;
@@ -56,27 +55,20 @@ public class MathSolution {
         this.answer = answer;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        MathSolution that = (MathSolution) o;
-        return operand1 == that.operand1 && operand2 == that.operand2 && answer == that.answer && Objects.equals(operation, that.operation);
+    //Calculator Methods
+    public Integer add(Integer operand1out, Integer operand2out) {
+        return operand1out + operand2out;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(operand1, operand2, operation, answer);
+    public Integer subtract(Integer operand1out, Integer operand2out) {
+        return operand1out - operand2out;
     }
 
-    @Override
-    public String toString() {
-        return "MathSolution{" +
-                "operand1=" + operand1 +
-                ", operand2=" + operand2 +
-                ", operation='" + operation + '\'' +
-                ", answer=" + answer +
-                '}';
+    public Integer multiply(Integer operand1out, Integer operand2out) {
+        return operand1out * operand2out;
     }
 
+    public Integer divide(Integer operand1out, Integer operand2out) {
+        return operand1out / operand2out;
+    }
 }

@@ -2,6 +2,7 @@ package com.company.M2ChallengeDaoKygan.controller;
 
 import com.company.M2ChallengeDaoKygan.model.MathSolution;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -9,70 +10,99 @@ import javax.validation.Valid;
 @RestController
 public class MathSolutionController {
 
-    @PostMapping("/add")
-    @ResponseStatus(value = HttpStatus.OK)
-    public MathSolution add(@Valid @RequestBody MathSolution mathSolution) {
-        MathSolution additionSolution = new MathSolution();
-        additionSolution.setOperand1(mathSolution.getOperand1());
-        additionSolution.setOperand2(mathSolution.getOperand2());
-        additionSolution.setOperation("add");
+    //ADD
+        @PostMapping("/add")
+        @ResponseStatus(value = HttpStatus.OK)
+        public MathSolution add(@Valid @RequestBody MathSolution mathSolution) {
+            try {
+                Integer inputNumber1 = mathSolution.getOperand1();
+                Integer inputNumber2 = mathSolution.getOperand2();
 
-        System.out.println("PERFORMING ADDITION");
-        additionSolution.setAnswer(mathSolution.getOperand1() + mathSolution.getOperand2());
+                if (inputNumber1 == null || inputNumber2 == null) {
+                    throw new NumberFormatException("ENTERED VALUE MUST BE A NUMBER AND MUST NOT BE BLANK");
+                }
+                mathSolution.setOperand1(inputNumber1);
+                mathSolution.setOperand2(inputNumber2);
+                mathSolution.setOperation("add");
+                mathSolution.setAnswer(mathSolution.add(inputNumber1, inputNumber2));
 
-        return additionSolution;
-
-    }
-
-    @PostMapping("/subtract")
-    @ResponseStatus(value = HttpStatus.OK)
-    public MathSolution subtract(@RequestBody @Valid MathSolution mathSolution) {
-        MathSolution subtractionSolution = new MathSolution();
-        subtractionSolution.setOperand1(mathSolution.getOperand1());
-        subtractionSolution.setOperand2(mathSolution.getOperand2());
-        subtractionSolution.setOperation("subtract");
-
-        System.out.println("PERFORMING SUBTRACTION");
-        subtractionSolution.setAnswer(mathSolution.getOperand1() - mathSolution.getOperand2());
-
-        return subtractionSolution;
-
-    }
-
-    @PostMapping("/multiply")
-    @ResponseStatus(value = HttpStatus.OK)
-    public MathSolution multiply(@RequestBody @Valid MathSolution mathSolution) {
-        MathSolution multiplicationSolution = new MathSolution();
-        multiplicationSolution.setOperand1(mathSolution.getOperand1());
-        multiplicationSolution.setOperand2(mathSolution.getOperand2());
-        multiplicationSolution.setOperation("multiply");
-
-        System.out.println("PERFORMING MULTIPLICATION");
-        multiplicationSolution.setAnswer(mathSolution.getOperand1() * mathSolution.getOperand2());
-
-        return multiplicationSolution;
-
-    }
-
-    @PostMapping("/divide")
-    @ResponseStatus(value = HttpStatus.OK)
-    public MathSolution divide(@RequestBody @Valid MathSolution mathSolution) {
-
-        MathSolution divisionSolution = new MathSolution();
-        divisionSolution.setOperand1(mathSolution.getOperand1());
-        divisionSolution.setOperand2(mathSolution.getOperand2());
-        divisionSolution.setOperation("divide");
-
-        if(divisionSolution.getOperand2() == 0) {
-            System.out.println("CANNOT DIVIDE BY ZERO");
-            throw new IllegalArgumentException("CANNOT DIVIDE BY ZERO");
+                return mathSolution;
+            } catch (HttpMessageNotReadableException e) {
+                throw e;
+            }
         }
 
-        System.out.println("PERFORMING DIVISION");
-        divisionSolution.setAnswer(mathSolution.getOperand1() / mathSolution.getOperand2());
+        //SUBTRACT
+        @PostMapping("/subtract")
+        @ResponseStatus(value = HttpStatus.OK)
+        public MathSolution subtract (@Valid @RequestBody MathSolution mathSolution) {
+            try {
+                Integer inputNumber1 = mathSolution.getOperand1();
+                Integer inputNumber2 = mathSolution.getOperand2();
 
-        return divisionSolution;
+                if (inputNumber1 == null || inputNumber2 == null) {
+                    throw new NumberFormatException("ENTERED VALUE MUST BE A NUMBER AND MUST NOT BE BLANK");
+                }
+
+                mathSolution.setOperand1(inputNumber1);
+                mathSolution.setOperand2(inputNumber2);
+                mathSolution.setOperation("subtract");
+                mathSolution.setAnswer(mathSolution.subtract(inputNumber1, inputNumber2));
+
+                return mathSolution;
+            } catch (HttpMessageNotReadableException e) {
+                throw e;
+            }
+        }
+
+        //MULTIPLY
+        @PostMapping("/multiply")
+        @ResponseStatus(value = HttpStatus.OK)
+        public MathSolution multiply (@Valid @RequestBody MathSolution mathSolution){
+            try {
+                Integer inputNumber1 = mathSolution.getOperand1();
+                Integer inputNumber2 = mathSolution.getOperand2();
+
+                if (inputNumber1 == null || inputNumber2 == null) {
+                    throw new NumberFormatException("ENTERED VALUE MUST BE A NUMBER AND MUST NOT BE BLANK");
+                }
+
+                mathSolution.setOperand1(inputNumber1);
+                mathSolution.setOperand2(inputNumber2);
+                mathSolution.setOperation("multiply");
+                mathSolution.setAnswer(mathSolution.multiply(inputNumber1, inputNumber2));
+
+                return mathSolution;
+            } catch (HttpMessageNotReadableException e) {
+                throw e;
+            }
+        }
+
+        //DIVIDE
+        @PostMapping("/divide")
+        @ResponseStatus(value = HttpStatus.OK)
+        public MathSolution divide (@Valid @RequestBody MathSolution mathSolution){
+
+            Integer inputNumber1 = mathSolution.getOperand1();
+            Integer inputNumber2 = mathSolution.getOperand2();
+            try {
+                if (inputNumber1 == null || inputNumber2 == null) {
+                    throw new NumberFormatException("ENTERED VALUE MUST BE A NUMBER AND MUST NOT BE BLANK");
+                } else if (inputNumber2 == 0) {
+                    throw new IllegalArgumentException("CANNOT DIVIDE BY ZERO");
+                }
+
+                mathSolution.setOperand1(inputNumber1);
+                mathSolution.setOperand2(inputNumber2);
+                mathSolution.setOperation("divide");
+                mathSolution.setAnswer(mathSolution.divide(inputNumber1, inputNumber2));
+
+                return mathSolution;
+            } catch (HttpMessageNotReadableException e) {
+                throw e;
+            }
+        }
 
     }
 
-}
+

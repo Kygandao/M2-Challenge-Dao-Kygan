@@ -1,8 +1,5 @@
 package com.company.M2ChallengeDaoKygan.model;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 public class Month {

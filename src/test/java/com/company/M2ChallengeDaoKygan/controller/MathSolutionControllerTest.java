@@ -11,6 +11,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -28,214 +31,374 @@ public class MathSolutionControllerTest {
     public void setUp() throws Exception {
     }
 
-    //TODO: ADD TEST FOR INVALID ADDITION REQUEST
-    //TEST SUCCESSFUL ADDITION REQUEST
+
+    //ADDITION CASE TESTS LINE 37 - 130
+    //SUCCESSFUL CASE
     @Test
     public void shouldReturnSumOfTwoInts() throws Exception {
 
-        MathSolution inputAddition = new MathSolution();
-        inputAddition.setOperand1(10);
-        inputAddition.setOperand2(10);
+        MathSolution inputValues = new MathSolution();
+        inputValues.setOperand1(10);
+        inputValues.setOperand2(5);
 
-        String inputJson = mapper.writeValueAsString(inputAddition);
+        String inputJson = mapper.writeValueAsString(inputValues);
 
-        MathSolution outputAddition = new MathSolution();
-        outputAddition.setOperand1(10);
-        outputAddition.setOperand2(10);
-        outputAddition.setOperation("add");
-        outputAddition.setAnswer(20);
+        MathSolution outputValues = new MathSolution(10, 5, "add", 15);
 
-        String outputJson = mapper.writeValueAsString(outputAddition);
+        String outputJson = mapper.writeValueAsString(outputValues);
 
-        mockMvc.perform(post("/add")
-                .content(inputJson)
-                .contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(
+                        post("/add")
+                                .content(inputJson)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(outputJson));
+    }
+
+    //EXPECTED FAILURE - MISSING INPUT
+    @Test
+    public void shouldReturnErrorCode422IfOperand1IsMissingDuringAddition() throws Exception {
+
+        MathSolution inputValues = new MathSolution();
+        inputValues.setOperand2(5);
+
+        String inputJson = mapper.writeValueAsString(inputValues);
+
+        mockMvc.perform(
+                        post("/add")
+                                .content(inputJson)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    //EXPECTED FAILURE - MISSING INPUT
+    @Test
+    public void shouldReturnErrorCode422IfOperand2IsMissingDuringAddition() throws Exception {
+
+        MathSolution inputValues = new MathSolution();
+        inputValues.setOperand1(10);
+
+        String inputJson = mapper.writeValueAsString(inputValues);
+
+        mockMvc.perform(
+                        post("/add")
+                                .content(inputJson)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    //EXPECTED FAILURE - MISSING INPUT
+    @Test
+    public void shouldReturnErrorCode422IfOperand1AndOperand2AreMissingDuringAddition() throws Exception {
+
+        MathSolution inputValues = new MathSolution();
+
+        String inputJson = mapper.writeValueAsString(inputValues);
+
+        mockMvc.perform(
+                        post("/add")
+                                .content(inputJson)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    //EXPECTED FAILURE - INVALID INPUT TYPE
+    @Test
+    public void shouldReturnErrorCode422IfInputIsNotAnIntegerDuringAddition() throws Exception {
+
+        Map<String, String> inputValues = new HashMap<>();
+        inputValues.put("operand1", "number");
+        inputValues.put("operand2", "second number");
+
+        String inputJson = mapper.writeValueAsString(inputValues);
+
+        mockMvc.perform(
+                        post("/add")
+                                .content(inputJson)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    //SUBTRACTION CASE TESTS LINES 134 - 227
+    //SUCCESSFUL CASE
+    @Test
+    public void shouldReturnDifferenceOfTwoInts() throws Exception {
+
+        MathSolution inputValues = new MathSolution();
+        inputValues.setOperand1(6);
+        inputValues.setOperand2(2);
+
+        String inputJson = mapper.writeValueAsString(inputValues);
+
+        MathSolution outputValues = new MathSolution(6, 2, "subtract", 4);
+
+        String outputJson = mapper.writeValueAsString(outputValues);
+
+        mockMvc.perform(
+                        post("/subtract")
+                                .content(inputJson)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(outputJson));
+    }
+
+    //EXPECTED FAILURE - MISSING INPUT
+    @Test
+    public void shouldReturnErrorCode422IfOperand1IsMissingDuringSubtraction() throws Exception {
+
+        MathSolution inputValues = new MathSolution();
+        inputValues.setOperand2(2);
+
+        String inputJson = mapper.writeValueAsString(inputValues);
+
+        mockMvc.perform(
+                        post("/subtract")
+                                .content(inputJson)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    //EXPECTED FAILURE - MISSING INPUT
+    @Test
+    public void shouldReturnErrorCode422IfOperand2IsMissingDuringSubtraction() throws Exception {
+
+        MathSolution inputValues = new MathSolution();
+        inputValues.setOperand1(6);
+
+        String inputJson = mapper.writeValueAsString(inputValues);
+
+        mockMvc.perform(
+                        post("/subtract")
+                                .content(inputJson)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    //EXPECTED FAILURE - MISSING INPUT
+    @Test
+    public void shouldReturnErrorCode422IfOperand1AndOperand2AreMissingDuringSubtraction() throws Exception {
+
+        MathSolution inputValues = new MathSolution();
+
+        String inputJson = mapper.writeValueAsString(inputValues);
+
+        mockMvc.perform(
+                        post("/subtract")
+                                .content(inputJson)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    //EXPECTED FAILURE - INVALID INPUT TYPE
+    @Test
+    public void shouldReturnErrorCode422IfInputIsNotAnIntegerDuringSubtraction() throws Exception {
+
+        Map<String, String> inputValues = new HashMap<>();
+        inputValues.put("operand1", "number");
+        inputValues.put("operand2", "second number");
+
+        String inputJson = mapper.writeValueAsString(inputValues);
+
+        mockMvc.perform(
+                        post("/subtract")
+                                .content(inputJson)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    //MULTIPLICATION CASE TESTS LINES 231 - 324
+    //SUCCESSFUL CASE
+    @Test
+    public void shouldReturnProductOfTwoInts() throws Exception {
+
+        MathSolution inputValues = new MathSolution();
+        inputValues.setOperand1(5);
+        inputValues.setOperand2(3);
+
+        String inputJson = mapper.writeValueAsString(inputValues);
+
+        MathSolution outputValues = new MathSolution(5, 3, "multiply", 15);
+
+        String outputJson = mapper.writeValueAsString(outputValues);
+
+        mockMvc.perform(
+                        post("/multiply")
+                                .content(inputJson)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(outputJson));
+    }
+
+    //EXPECTED FAILURE - MISSING INPUT
+    @Test
+    public void shouldReturnErrorCode422IfOperand1IsMissingDuringMultiplication() throws Exception {
+
+        MathSolution inputValues = new MathSolution();
+        inputValues.setOperand2(2);
+
+        String inputJson = mapper.writeValueAsString(inputValues);
+
+        mockMvc.perform(
+                        post("/multiply")
+                                .content(inputJson)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    //EXPECTED FAILURE - MISSING INPUT
+    @Test
+    public void shouldReturnErrorCode422IfOperand2IsMissingDuringMultiplication() throws Exception {
+
+        MathSolution inputValues = new MathSolution();
+        inputValues.setOperand1(6);
+
+        String inputJson = mapper.writeValueAsString(inputValues);
+
+        mockMvc.perform(
+                        post("/multiply")
+                                .content(inputJson)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    //EXPECTED FAILURE - MISSING INPUT
+    @Test
+    public void shouldReturnErrorCode422IfOperand1AndOperand2AreMissingDuringMultiplication() throws Exception {
+
+        MathSolution inputValues = new MathSolution();
+
+        String inputJson = mapper.writeValueAsString(inputValues);
+
+        mockMvc.perform(
+                        post("/multiply")
+                                .content(inputJson)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    //EXPECTED FAILURE - INVALID INPUT TYPE
+    @Test
+    public void shouldReturnErrorCode422IfInputIsNotAnIntegerDuringMultiplication() throws Exception {
+
+        Map<String, String> inputValues = new HashMap<>();
+        inputValues.put("operand1", "number");
+        inputValues.put("operand2", "second number");
+
+        String inputJson = mapper.writeValueAsString(inputValues);
+
+        mockMvc.perform(
+                        post("/multiply")
+                                .content(inputJson)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    //DIVISION CASE TESTS LINES 328 - 464
+    //SUCCESSFUL CASE
+    @Test
+    public void shouldReturnQuotientOfTwoInts() throws Exception {
+
+        MathSolution inputValues = new MathSolution();
+        inputValues.setOperand1(10);
+        inputValues.setOperand2(2);
+
+        String inputJson = mapper.writeValueAsString(inputValues);
+
+        MathSolution outputValues = new MathSolution(10, 2, "divide", 5);
+
+        String outputJson = mapper.writeValueAsString(outputValues);
+
+        mockMvc.perform(
+                        post("/divide")
+                                .content(inputJson)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(outputJson));
+    }
+
+    //SUCCESSFUL CASE - ZERO NUMERATOR
+    @Test
+    public void shouldReturnZeroWhenOperand1IsZero() throws Exception {
+        MathSolution inputValues = new MathSolution();
+        inputValues.setOperand1(0);
+        inputValues.setOperand2(10);
+
+        String inputJson = mapper.writeValueAsString(inputValues);
+
+        MathSolution outputValues = new MathSolution(0, 10, "divide", 0);
+
+        String outputJson = mapper.writeValueAsString(outputValues);
+
+        mockMvc.perform(
+                        post("/divide")
+                                .content(inputJson)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(outputJson));
+    }
+
+
+    //EXPECTED FAILURE - DIVIDE BY ZERO
+    @Test
+    public void shouldReturnErrorCode422IfOperand2IsZero() throws Exception {
+
+        MathSolution inputValues = new MathSolution();
+        inputValues.setOperand1(10);
+        inputValues.setOperand2(0);
+
+        String inputJson = mapper.writeValueAsString(inputValues);
+
+        mockMvc.perform(
+                post("/divide")
+                        .content(inputJson)
+                        .contentType(MediaType.APPLICATION_JSON)
         )
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().json(outputJson));
-
+                .andExpect(status().isUnprocessableEntity());
     }
 
-
-    //TEST INVALID ADDITION REQUEST
+    //EXPECTED FAILURE - MISSING INPUT
     @Test
-    public void shouldReturn422StatusIfAdditionIsMissingOrNotNumbers() throws Exception {
+    public void shouldReturnErrorCode422IfOperand1IsMissingDuringDivision() throws Exception {
 
-        MathSolution inputAddition = new MathSolution();
-        inputAddition.setOperand1(10);
-        //MISSING OPERAND 2
-        String inputJson = mapper.writeValueAsString(inputAddition);
+        MathSolution inputValues = new MathSolution();
+        inputValues.setOperand2(2);
 
-        MathSolution outputAddition = new MathSolution();
-        outputAddition.setOperand1(10);
-        outputAddition.setOperand2(10);
-        outputAddition.setOperation("add");
-        outputAddition.setAnswer(20);
-
-        String outputJson = mapper.writeValueAsString(outputAddition);
-
-        //TODO: GETTING 400 ERROR INSTEAD OF 422
-        mockMvc.perform(post("/add")
-                        .content(inputJson)
-                        .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andDo(print())
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(content().json(outputJson));
-
-    }
-
-
-    //TEST SUCCESSFUL SUBTRACTION REQUEST
-    @Test
-    public void shouldReturnDifferenceOfTwoInts() throws Exception{
-        MathSolution inputSubtraction = new MathSolution();
-        inputSubtraction.setOperand1(50);
-        inputSubtraction.setOperand2(30);
-
-        String inputJson = mapper.writeValueAsString(inputSubtraction);
-
-        MathSolution outputSubtraction = new MathSolution();
-        outputSubtraction.setOperand1(50);
-        outputSubtraction.setOperand2(30);
-        outputSubtraction.setOperation("subtract");
-        outputSubtraction.setAnswer(20);
-
-        String outputJson = mapper.writeValueAsString(outputSubtraction);
-
-        mockMvc.perform(post("/subtract")
-                        .content(inputJson)
-                        .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().json(outputJson));
-
-    }
-
-    //TEST INVALID SUBTRACTION REQUEST
-    @Test
-    public void shouldReturn422StatusIfSubtractionIsMissingOrNotNumbers() throws Exception {
-
-        MathSolution inputSubtraction = new MathSolution();
-        inputSubtraction.setOperand1(50);
-        //MISSING OPERAND2
-        String inputJson = mapper.writeValueAsString(inputSubtraction);
-
-        MathSolution outputSubtraction = new MathSolution();
-        outputSubtraction.setOperand1(50);
-        outputSubtraction.setOperand2(30);
-        outputSubtraction.setOperation("subtract");
-        outputSubtraction.setAnswer(20);
-
-        String outputJson = mapper.writeValueAsString(outputSubtraction);
-
-        //TODO: GETTING 400 ERROR INSTEAD OF 422
-        mockMvc.perform(post("/subtract")
-                        .content(inputJson)
-                        .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andDo(print())
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(content().json(outputJson));
-
-    }
-
-
-    //TEST SUCCESSFUL MULTIPLICATION REQUEST
-    @Test
-    public void shouldReturnProductOfTwoInts() throws Exception{
-        MathSolution inputMultiplication = new MathSolution();
-        inputMultiplication.setOperand1(10);
-        inputMultiplication.setOperand2(10);
-
-        String inputJson = mapper.writeValueAsString(inputMultiplication);
-
-        MathSolution outputMultiplication = new MathSolution();
-        outputMultiplication.setOperand1(10);
-        outputMultiplication.setOperand2(10);
-        outputMultiplication.setOperation("multiply");
-        outputMultiplication.setAnswer(100);
-
-        String outputJson = mapper.writeValueAsString(outputMultiplication);
-
-        mockMvc.perform(post("/multiply")
-                        .content(inputJson)
-                        .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().json(outputJson));
-
-    }
-
-    //TEST INVALID MULTIPLICATION REQUEST
-    @Test
-    public void shouldReturn422StatusIfMultiplicationIsMissingOrNotNumbers() throws Exception {
-
-        MathSolution inputAddition = new MathSolution();
-        inputAddition.setOperand1(10);
-        //MISSING OPERAND2
-
-        String inputJson = mapper.writeValueAsString(inputAddition);
-
-        MathSolution outputAddition = new MathSolution();
-        outputAddition.setOperand1(10);
-        outputAddition.setOperand2(10);
-        outputAddition.setOperation("multiply");
-        outputAddition.setAnswer(100);
-
-        String outputJson = mapper.writeValueAsString(outputAddition);
-
-        //TODO: GETTING 400 ERROR INSTEAD OF 422
-        mockMvc.perform(post("/multiply")
-                        .content(inputJson)
-                        .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andDo(print())
-                .andExpect(status().isUnprocessableEntity())
-                .andExpect(content().json(outputJson));
-
-    }
-
-    //TEST SUCCESSFUL DIVISION REQUEST
-    @Test
-    public void shouldReturnQuotientOfTwoInts() throws Exception{
-        MathSolution inputDivision = new MathSolution();
-        inputDivision.setOperand1(10);
-        inputDivision.setOperand2(2);
-
-        String inputJson = mapper.writeValueAsString(inputDivision);
-
-        MathSolution outputDivision = new MathSolution();
-        outputDivision.setOperand1(10);
-        outputDivision.setOperand2(2);
-        outputDivision.setOperation("divide");
-        outputDivision.setAnswer(5);
-
-        String outputJson = mapper.writeValueAsString(outputDivision);
-
-        mockMvc.perform(post("/divide")
-                .content(inputJson)
-                .contentType(MediaType.APPLICATION_JSON)
-        )
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().json(outputJson));
-
-    }
-
-    //TEST INVALID DIVISION REQUEST
-    @Test
-    public void shouldReturn422StatusCodeWithInvalidRequestBody() throws Exception {
-
-        //TEST MISSING OR NOT NUMBER
-        MathSolution divisionSolution = new MathSolution();
-        divisionSolution.setOperand1(10);
-        //MISSING OPERAND2
-
-        String inputJson = mapper.writeValueAsString(divisionSolution);
+        String inputJson = mapper.writeValueAsString(inputValues);
 
         mockMvc.perform(
                         post("/divide")
@@ -244,22 +407,62 @@ public class MathSolutionControllerTest {
                 )
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
+    }
 
-        //TEST DIVIDE BY ZERO
-        MathSolution divideByZero = new MathSolution();
-        divideByZero.setOperand1(10);
-        divideByZero.setOperand2(0);
+    //EXPECTED FAILURE - MISSING INPUT
+    @Test
+    public void shouldReturnErrorCode422IfOperand2IsMissingDuringDivision() throws Exception {
 
-        String inputJsonDivideByZero = mapper.writeValueAsString(divideByZero);
+        MathSolution inputValues = new MathSolution();
+        inputValues.setOperand1(6);
+
+        String inputJson = mapper.writeValueAsString(inputValues);
 
         mockMvc.perform(
                         post("/divide")
-                                .content(inputJsonDivideByZero)
+                                .content(inputJson)
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
 
+    //EXPECTED FAILURE - MISSING INPUT
+    @Test
+    public void shouldReturnErrorCode422IfOperand1AndOperand2AreMissingDuringDivision() throws Exception {
+
+        MathSolution inputValues = new MathSolution();
+
+        String inputJson = mapper.writeValueAsString(inputValues);
+
+        mockMvc.perform(
+                        post("/divide")
+                                .content(inputJson)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    //EXPECTED FAILURE - INVALID INPUT TYPE
+    @Test
+    public void shouldReturnErrorCode422IfInputIsNotAnIntegerDuringDivision() throws Exception {
+
+        Map<String, String> inputValues = new HashMap<>();
+        inputValues.put("operand1", "number");
+        inputValues.put("operand2", "second number");
+
+        String inputJson = mapper.writeValueAsString(inputValues);
+
+        mockMvc.perform(
+                        post("/divide")
+                                .content(inputJson)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    //END OF TESTS
 
 }
